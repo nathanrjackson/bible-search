@@ -25,11 +25,12 @@ def main():
         user_input = entry.get()
         
         # Clear all widgets
-        scripture = find_scripture(user_input)
+        scriptures = find_scripture(user_input)
         
-        # Add a new label with personalized text
         new_label = tk.Label(root, text=f"Here is your scripture: {scripture}", font=("Arial", 14), wraplength=600)
-        new_label.pack()
+        for scripture in scriptures:
+            # Add a new label with personalized text
+            new_label.pack()
         
         # Add a "Search Again" button
         search_again_button = tk.Button(root, text="Search Again", command=reset_ui)
