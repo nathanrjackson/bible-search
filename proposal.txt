@@ -30,7 +30,7 @@ a more complex program.
     (Some examples are: csv, datetime, functools, matplotlib, math,
     pandas, pytest, random, requests, and tkinter.)
 
-> This program will utilize csv, pytest, and tkinter, along with
+> This program will utilize csv, pytest, and random, along with
 any other modules I deem useful during development.
 
 5. Will you separate your Python program into functions that each
