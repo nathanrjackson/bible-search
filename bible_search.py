@@ -1,6 +1,5 @@
 # imports
 import csv
-import pytest
 import random
 
 # VERSE_ID_INDEX = 0
@@ -16,21 +15,84 @@ def main():
     kjv_compound_list = read_csv_file("kjv.csv")
 
     # Get keyword(s) from user
+    print()
     keywords = input("Enter a word or phrase to search: ")
 
     # Search the Bible for keyword(s)
     scriptures = find_scriptures(kjv_compound_list, keywords)
 
-    print(scriptures)
+    # Navigate scriptures including keyword(s)
+    # Find books
+    books = find_books(scriptures)
+    
+    print()
+    print(f"Books including \"{keywords}\":")
+
+    # Display books
+    for book in books:
+        print(book)
+
+    # Get desired book from user
+    print()
+    desired_book = input("Select book: ")
+    
+    # Find chapters
+    chapters = find_chapters(scriptures, desired_book)
+
+    print()
+    print(f"Chapters including \"{keywords}\":")
+
+    # Display chapters
+    for chapter in chapters:
+        print(chapter)
+
+    # Get desired chapter from user
+    print()
+    desired_chapter = input("Select chapter: ")
+
+    # Find verses
+    verses = find_verses(scriptures, desired_book, desired_chapter)
+
+    print()
+    print(f"Verses including \"{keywords}\":")
+
+    # Display verses
+    for verse in verses:
+        print(verse)
+
+    # Get desired verse from user
+    print()
+    desired_verse = input("Select verse: ")
+
+    # Find verse text
+    verse_text = find_text(
+        scriptures, desired_book, 
+        desired_chapter, 
+        desired_verse
+    )
+
+    print()
+    print(f"Verse including \"{keywords}\":")
+    print()
+
+    # Display verse text
+    print(f"{desired_book} {desired_chapter}:{desired_verse}")
+    print(verse_text)
+    print()
 
 
 def read_csv_file(filename):
-    """Read a CSV file, skip the first line, and append 
-    each line to a list
-    Parameter: csv filename
-    Return: a compound list
+    """Read a CSV file, skip the first line (header), and read the content
+    into a compound list.
+
+    Parameter:
+        filename: The name of a CSV file.
+
+    Returns:
+        compound_list: A list containing lists of verse information in this
+        format: [Verse ID, Book Name, Book Number, Chapter,Verse, Text].
     """
-    # Create an empty list
+    # Create an empty list for scriptures
     compound_list = []
 
     # Read CSV file
@@ -43,17 +105,19 @@ def read_csv_file(filename):
         for line in reader:
             compound_list.append(line)
 
-    # Return compound list
     return compound_list
 
 
 def find_scriptures(kjv_compound_list, keywords):
-    """Search for keyword(s) within a compound list
+    """Search the text content of verses for keyword(s).
+
     Parameters:
-        compound list
-        keyword(s)
-    Return: a list of scriptures that 
-    include keyword(s)
+        kjv_compound_list: A compound list of the Bible.
+        keywords: Desired keyword(s) from user.
+
+    Returns:
+        scriptures: A list containing sciptures that include keyword(s) in
+        this format: [Verse ID, Book Name, Book Number, Chapter,Verse, Text].
     """
     # Create an empty list
     scriptures = []
@@ -68,8 +132,106 @@ def find_scriptures(kjv_compound_list, keywords):
     return scriptures
 
 
-def navigate_scriptures():
-    pass
+def find_books(scriptures):
+    """Find books that include the desired keyword(s).
+
+    Parameters:
+        scriptures: A list containing sciptures that include keyword(s).
+
+    Returns:
+        book: A list of books that contain the desired keyword(s).
+    """
+    # Create and empty string and empty list
+    book_name = ""
+    books = []
+    
+    # Append each book that contains the desired keyword(s)
+    for verse in scriptures:
+        if verse[BOOK_NAME_INDEX] != book_name:
+            book_name = verse[BOOK_NAME_INDEX]
+            books.append(book_name)
+    
+    return books
+
+
+def find_chapters(scriptures, desired_book):
+    """Find chapters in a desired book that include the desired keyword(s).
+
+    Parameters:
+        scriptures: A list containing sciptures that include keyword(s).
+        desired_book: The book desired by the user.
+
+    Returns:
+        chapters: a list of chapters that contain the desired keyword(s).
+    """
+    # Create and empty string and empty list
+    chapter_number = ""
+    chapters = []
+    
+    # Append each chapter that contains the desired keyword(s)
+    for verse in scriptures:
+        if (
+            verse[BOOK_NAME_INDEX] == desired_book 
+            and verse[CHAPTER_INDEX] != chapter_number
+        ):
+            chapter_number = verse[CHAPTER_INDEX]
+            chapters.append(chapter_number)
+    
+    return chapters
+
+
+def find_verses(scriptures, desired_book, desired_chapter):
+    """Find verses in a desired book and chapter that include the desired
+    keyword(s).
+
+    Parameters:
+        scriptures: A list containing sciptures that include keyword(s).
+        desired_book: The book desired by the user.
+        desired_chapter: The chapter desired by the user.
+
+    Returns:
+        verses: a list of verses that contain the desired keyword(s).
+    """
+    # Create and empty string and empty list
+    verse_number = -1
+    verses = []
+    
+    # Append each verse that contains the desired keyword(s)
+    for verse in scriptures:
+        if (
+            verse[BOOK_NAME_INDEX] == desired_book 
+            and verse[CHAPTER_INDEX] == desired_chapter 
+            and verse[VERSE_INDEX] != verse_number
+        ):
+            verse_number = verse[VERSE_INDEX]
+            verses.append(verse_number)
+    
+    return verses
+
+
+def find_text(scriptures, desired_book, desired_chapter, desired_verse):
+    """Find text in a desired book, chapter, and verse that include the
+    desired keyword(s).
+
+    Parameters:
+        scriptures: A list containing sciptures that include keyword(s).
+        desired_book: The book desired by the user.
+        desired_chapter: The chapter desired by the user.
+        desired_verse: The verse desired by the user.
+
+    Returns:
+        text: a string of the verse text that contain the desired keyword(s).
+    """
+    # Find the text of the verse that contains the desired keyword(s)
+    for verse in scriptures:
+        if (
+            verse[BOOK_NAME_INDEX] == desired_book
+            and verse[CHAPTER_INDEX] == desired_chapter
+            and verse[VERSE_INDEX] == desired_verse
+        ):
+            verse_text = verse[TEXT_INDEX]
+    
+    return verse_text
 
 
 def random_scripture():
