@@ -2,7 +2,7 @@
 import csv
 import random
 
-# VERSE_ID_INDEX = 0
+VERSE_ID_INDEX = 0
 BOOK_NAME_INDEX = 1
 BOOK_NUMBER_INDEX = 2
 CHAPTER_INDEX = 3
@@ -15,54 +15,86 @@ def main():
     kjv_compound_list = read_csv_file("kjv.csv")
 
     # Get keyword(s) from user
-    print()
-    keywords = input("Enter a word or phrase to search: ")
+    while True:
+        print()
+        keywords = input("Enter a word or phrase to search: ")
 
-    # Search the Bible for keyword(s)
-    scriptures = find_scriptures(kjv_compound_list, keywords)
+        # Search the Bible for keyword(s)
+        scriptures = find_scriptures(kjv_compound_list, keywords)
+
+        if not scriptures:
+            print("Keyword not found. Try again.")
+        else:
+            break
+
+    # Get keyword count
+    count = count_keywords(scriptures, keywords)
+
+    # Display keyword count
+    print(
+        f"\"{keywords.capitalize()}\" is found in {count} verses in the Bible."
+    )
 
     # Navigate scriptures including keyword(s)
     # Find books
     books = find_books(scriptures)
     
-    print()
-    print(f"Books including \"{keywords}\":")
+    while True:
+        print()
+        print(f"Books including \"{keywords.title()}\":")
 
-    # Display books
-    for book in books:
-        print(book)
+        # Display books
+        for book in books:
+            print(book)
 
-    # Get desired book from user
-    print()
-    desired_book = input("Select book: ")
-    
+        # Get desired book from user
+        print()
+        desired_book = input("Select book: ")
+
+        if desired_book.title() not in books:
+                print("Book not found. Try again.")
+        else:
+            break
+
     # Find chapters
     chapters = find_chapters(scriptures, desired_book)
 
-    print()
-    print(f"Chapters including \"{keywords}\":")
+    while True:
+        print()
+        print(f"Chapters including \"{keywords.title()}\":")
 
-    # Display chapters
-    for chapter in chapters:
-        print(chapter)
+        # Display chapters
+        for chapter in chapters:
+            print(chapter)
 
-    # Get desired chapter from user
-    print()
-    desired_chapter = input("Select chapter: ")
+        # Get desired chapter from user
+        print()
+        desired_chapter = input("Select chapter: ")
+
+        if desired_chapter not in chapters:
+                    print("Chapter not found. Try again.")
+        else:
+            break
 
     # Find verses
     verses = find_verses(scriptures, desired_book, desired_chapter)
 
-    print()
-    print(f"Verses including \"{keywords}\":")
+    while True:
+        print()
+        print(f"Verses including \"{keywords.title()}\":")
 
-    # Display verses
-    for verse in verses:
-        print(verse)
+        # Display verses
+        for verse in verses:
+            print(verse)
 
-    # Get desired verse from user
-    print()
-    desired_verse = input("Select verse: ")
+        # Get desired verse from user
+        print()
+        desired_verse = input("Select verse: ")
+
+        if desired_verse not in verses:
+                    print("Verse not found. Try again.")
+        else:
+            break
 
     # Find verse text
     verse_text = find_text(
@@ -72,12 +104,28 @@ def main():
     )
 
     print()
-    print(f"Verse including \"{keywords}\":")
+    print(f"Verse including \"{keywords.title()}\":")
     print()
 
     # Display verse text
-    print(f"{desired_book} {desired_chapter}:{desired_verse}")
+    print(f"{desired_book.title()} {desired_chapter}:{desired_verse}")
     print(verse_text)
+    print()
+
+
+    # Get random scripture
+    random_scripture = random_scripture_choice(kjv_compound_list)
+    
+    random_book = random_scripture[BOOK_NAME_INDEX]
+    random_chapter = random_scripture[CHAPTER_INDEX]
+    random_verse = random_scripture[VERSE_INDEX]
+    random_text = random_scripture[TEXT_INDEX]
+
+    # Print random scripture
+    print("Random verse:")
+    print()
+    print(f"{random_book.title()} {random_chapter}:{random_verse}")
+    print(random_text)
     print()
 
 
@@ -132,6 +180,26 @@ def find_scriptures(kjv_compound_list, keywords):
     return scriptures
 
 
+def count_keywords(scriptures, keywords):
+    """Count how many verses include keyword(s)
+    
+    Parameters:
+        scriptures: A list containing sciptures that include keyword(s).
+        keywords: Desired keyword(s) from user.
+
+    Returns:
+        keyword_count: How many verses include the keyword(s)
+    """
+    keyword_count = 0
+    
+    # Count how many verses include keyword(s) 
+    for verse in scriptures:
+        if keywords.lower() in verse[TEXT_INDEX].lower():
+            keyword_count += 1
+    
+    return keyword_count
+
+
 def find_books(scriptures):
     """Find books that include the desired keyword(s).
 
@@ -171,7 +239,7 @@ def find_chapters(scriptures, desired_book):
     # Append each chapter that contains the desired keyword(s)
     for verse in scriptures:
         if (
-            verse[BOOK_NAME_INDEX] == desired_book 
+            verse[BOOK_NAME_INDEX].lower() == desired_book.lower() 
             and verse[CHAPTER_INDEX] != chapter_number
         ):
             chapter_number = verse[CHAPTER_INDEX]
@@ -199,8 +267,8 @@ def find_verses(scriptures, desired_book, desired_chapter):
     # Append each verse that contains the desired keyword(s)
     for verse in scriptures:
         if (
-            verse[BOOK_NAME_INDEX] == desired_book 
-            and verse[CHAPTER_INDEX] == desired_chapter 
+            verse[BOOK_NAME_INDEX].lower() == desired_book.lower() 
+            and verse[CHAPTER_INDEX].lower() == desired_chapter.lower() 
             and verse[VERSE_INDEX] != verse_number
         ):
             verse_number = verse[VERSE_INDEX]
@@ -225,17 +293,19 @@ def find_text(scriptures, desired_book, desired_chapter, desired_verse):
     # Find the text of the verse that contains the desired keyword(s)
     for verse in scriptures:
         if (
-            verse[BOOK_NAME_INDEX] == desired_book
-            and verse[CHAPTER_INDEX] == desired_chapter
-            and verse[VERSE_INDEX] == desired_verse
+            verse[BOOK_NAME_INDEX].lower() == desired_book.lower()
+            and verse[CHAPTER_INDEX].lower() == desired_chapter.lower()
+            and verse[VERSE_INDEX].lower() == desired_verse.lower()
         ):
             verse_text = verse[TEXT_INDEX]
     
     return verse_text
 
 
-def random_scripture():
-    pass
+def random_scripture_choice(kjv_compound_list):
+    random_scripture = random.choice(kjv_compound_list)
+
+    return random_scripture
 
 
 if __name__ == "__main__":
