@@ -113,10 +113,10 @@ def main():
     print(verse_text)
     print()
 
-
     # Get random scripture
     random_scripture = random_scripture_choice(kjv_compound_list)
     
+    # Access attributes of random scripture
     random_book = random_scripture[BOOK_NAME_INDEX]
     random_chapter = random_scripture[CHAPTER_INDEX]
     random_verse = random_scripture[VERSE_INDEX]
@@ -269,7 +269,7 @@ def find_verses(scriptures, desired_book, desired_chapter):
     for verse in scriptures:
         if (
             verse[BOOK_NAME_INDEX].lower() == desired_book.lower() 
-            and verse[CHAPTER_INDEX].lower() == desired_chapter.lower() 
+            and verse[CHAPTER_INDEX] == desired_chapter
             and verse[VERSE_INDEX] != verse_number
         ):
             verse_number = verse[VERSE_INDEX]
@@ -291,12 +291,13 @@ def find_text(scriptures, desired_book, desired_chapter, desired_verse):
     Returns:
         text: a string of the verse text that contain the desired keyword(s).
     """
+    verse_text = ""
     # Find the text of the verse that contains the desired keyword(s)
     for verse in scriptures:
         if (
             verse[BOOK_NAME_INDEX].lower() == desired_book.lower()
-            and verse[CHAPTER_INDEX].lower() == desired_chapter.lower()
-            and verse[VERSE_INDEX].lower() == desired_verse.lower()
+            and verse[CHAPTER_INDEX] == desired_chapter
+            and verse[VERSE_INDEX] == desired_verse
         ):
             verse_text = verse[TEXT_INDEX]
     
