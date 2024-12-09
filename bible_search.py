@@ -32,7 +32,8 @@ def main():
 
     # Display keyword count
     print(
-        f"\"{keywords.capitalize()}\" is found in {count} verses in the Bible."
+        f'\"{keywords.capitalize()}\"' 
+        f"is found in {count} verses in the Bible."
     )
 
     # Navigate scriptures including keyword(s)
@@ -41,7 +42,7 @@ def main():
     
     while True:
         print()
-        print(f"Books including \"{keywords.title()}\":")
+        print(f'Books including \"{keywords.title()}\":')
 
         # Display books
         for book in books:
@@ -61,7 +62,7 @@ def main():
 
     while True:
         print()
-        print(f"Chapters including \"{keywords.title()}\":")
+        print(f'Chapters including \"{keywords.title()}\":')
 
         # Display chapters
         for chapter in chapters:
@@ -81,7 +82,7 @@ def main():
 
     while True:
         print()
-        print(f"Verses including \"{keywords.title()}\":")
+        print(f'Verses including \"{keywords.title()}\":')
 
         # Display verses
         for verse in verses:
@@ -104,7 +105,7 @@ def main():
     )
 
     print()
-    print(f"Verse including \"{keywords.title()}\":")
+    print(f'Verse including \"{keywords.title()}\":')
     print()
 
     # Display verse text
