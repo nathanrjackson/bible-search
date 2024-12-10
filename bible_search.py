@@ -32,7 +32,7 @@ def main():
 
     # Display keyword count
     print(
-        f'\"{keywords.capitalize()}\"' 
+        f'\"{keywords.capitalize()}\" ' 
         f"is found in {count} verses in the Bible."
     )
 
