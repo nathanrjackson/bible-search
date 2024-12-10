@@ -305,6 +305,14 @@ def find_text(scriptures, desired_book, desired_chapter, desired_verse):
 
 
 def random_scripture_choice(kjv_compound_list):
+    """Choose a random scripture from a compoound list of the entire Bible.
+
+    Parameter:
+        kjv_compound_list: A compound list of the Bible.
+
+    Returns:
+        random_scripture: A list containing the random scripture
+    """
     random_scripture = random.choice(kjv_compound_list)
 
     return random_scripture
