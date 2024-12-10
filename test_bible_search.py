@@ -39,7 +39,7 @@ def test_find_scriptures():
 
 
 def test_count_keywords():
-    """Verify that the count_keywords_scriptures function works correctly.
+    """Verify that the count_keywords function works correctly.
     Parameters: none
     Return: nothing
     """
